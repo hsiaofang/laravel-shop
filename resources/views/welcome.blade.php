@@ -29,8 +29,9 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-outline-primary">登入</a>
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-outline-primary ms-2">註冊</a>
+                    <a href="{{ route('register') }}" class="btn btn-outline-primary ms-2">註冊</a>
                     @endif
+                    <a href="{{ route('login.provider', ['provider' => 'google']) }}" class="btn btn-primary ms-2">使用 Google 登入</a>
                 @endauth
             </div>
         @endif

@@ -11,13 +11,13 @@ use App\Cart;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        $products = Product::all();
-        dd($products);
+    // public function index()
+    // {
+    //     // $products = Product::all();
+    //     // dd($products);
 
-        return view('home', ['products' => $products]);
-    }
+        // return view('cart', compact('cart', 'totalPrice', 'totalQty'));
+    // }
 
     public function getAddToCart(Request $request, $id)
     {
@@ -25,8 +25,8 @@ class ProductController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->add($product, $product->id);
+        // dd($cart);
         Session::put('cart', $cart);
-        // return redirect('/');
         // dd(Session::get('cart'));
 
         return redirect()->back()->with('success', '商品已成功加入購物車！');
@@ -36,9 +36,11 @@ class ProductController extends Controller
     public function cart()
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        // dd($oldCart);   
 
         if ($oldCart) {
             $cart = new Cart($oldCart);
+            // dd($oldCart, $cart);
             return view('cart', [
                 'products' => $oldCart->items,
                 'totalPrice' => $oldCart->totalPrice,
@@ -52,4 +54,15 @@ class ProductController extends Controller
             ]);
         }
     }
+
+
+    public function returnShop()
+    {
+        return redirect()->route('home');
+    }
+
+
+    
+
+
 }

@@ -13,11 +13,11 @@ class Cart
     public $totalPrice = 0;
     public function __construct($oldCart)
     {
-        // if($oldCart) {
-        //     $this->items      = $oldCart->items;
-        //     $this->totalQty = $oldCart->totalQty;
-        //     $this->totalPrice = $oldCart->totalPrice;
-        // }
+        if($oldCart) {
+            $this->items      = $oldCart->items;
+            $this->totalQty = $oldCart->totalQty;
+            $this->totalPrice = $oldCart->totalPrice;
+        }
     }
 
 
