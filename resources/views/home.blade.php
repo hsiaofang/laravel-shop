@@ -20,16 +20,14 @@
                     @foreach($products as $product)
                     <div class="col-md-3 mb-4">
                         <div class="product-card">
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="img-fluid">
                             <h2 class="product-title">{{ $product->name }}</h2>
                             <p class="product-price">{{ $product->price }}</p>
                             <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="add-to-cart-btn">加入購物車</button>
+                                <button type="submit" class="add-to-cart-btn" data-product-id="{{ $product->id }}">加入購物車</button>
                             </form>
-
-
-
                         </div>
                     </div>
                     @endforeach
@@ -45,31 +43,29 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // 監聽加入購物車按鈕點擊事件
-        document.querySelectorAll('.add-to-cart-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var productId = this.getAttribute('data-product-id');
+    document.querySelectorAll('.add-to-cart-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var productId = this.getAttribute('data-product-id');
+            var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-                // 發送 Ajax 請求到後端的購物車 API
-                fetch('/api/add-to-cart/' + productId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ quantity: 1 })
+            fetch('/api/add-to-cart/' + productId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ quantity: 1 })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        // 在這裡處理後端返回的數據，例如更新購物車數量或顯示成功消息
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        // 處理錯誤
-                        console.error('Error:', error);
-                    });
-            });
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     });
+});
+
 </script>
 @endsection

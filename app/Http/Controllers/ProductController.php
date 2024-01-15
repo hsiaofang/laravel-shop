@@ -25,9 +25,7 @@ class ProductController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->add($product, $product->id);
-        // dd($cart);
         Session::put('cart', $cart);
-        // dd(Session::get('cart'));
 
         return redirect()->back()->with('success', '商品已成功加入購物車！');
 
@@ -36,11 +34,10 @@ class ProductController extends Controller
     public function cart()
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        // dd($oldCart);   
 
         if ($oldCart) {
             $cart = new Cart($oldCart);
-            // dd($oldCart, $cart);
+            
             return view('cart', [
                 'products' => $oldCart->items,
                 'totalPrice' => $oldCart->totalPrice,

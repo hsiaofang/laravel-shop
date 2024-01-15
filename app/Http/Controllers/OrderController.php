@@ -31,20 +31,14 @@ class OrderController extends Controller
     {
         $oldCart = session()->has('cart') ? session()->get('cart') : null;
         $cart = new Cart($oldCart);
-        // dd($cart);
+
         return view('order', [
             'products' => $cart->items,
             'totalPrice' => $cart->totalPrice,
             'totalQty' => $cart->totalQty,
-            'order' => null, // 將 $order 變數添加到視圖中，這樣它就不會是未定義的了
+            'order' => null,
 
         ]);
-
-        // return view('cart', [
-        //     'cart' => $oldCart ?? null,
-        //     'totalPrice' => optional($oldCart)->totalPrice ?? 0,
-        //     'totalQty' => session('cartQuantity') ?? optional($oldCart)->totalQty ?? 0,
-        // ]);
     }
 
 
@@ -55,7 +49,6 @@ class OrderController extends Controller
             'email' => 'required',
         ]);
         $cart = session()->get('cart');
-        // dd($cart);
         $uuid_temp = str_replace("-", "", substr(Str::uuid()->toString(), 0, 18));
         // $order = Order::create([
         //     'name' => request('name'),
@@ -65,22 +58,18 @@ class OrderController extends Controller
         //     ]);
         $orderItems = [];
 
-        // 根據商品名稱查詢相關資訊
         foreach ($cart->items as $productId => $item) {
             $product = Product::find($productId);
 
             if ($product) {
-                // 將商品資訊添加到訂單項目中
                 $orderItems[] = [
                     'name' => $product->name,
                     'description' => $product->description,
                     'price' => $product->price,
-                    // 其他可能需要的商品資訊
                 ];
             }
         }
 
-        // 建立訂單，將訂單項目轉為 JSON 字串
         $order = Order::create([
             'name' => request('name'),
             'email' => request('email'),
@@ -130,7 +119,6 @@ class OrderController extends Controller
 
     public function callback()
     {
-        // dd(request());
         $order = Order::where('uuid', '=', request('MerchantTradeNo'))->firstOrFail();
         $order->paid = !$order->paid;
         $order->save();

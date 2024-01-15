@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 // google登入
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -73,7 +74,7 @@ class LoginController extends Controller
         $newUser->username = $user->name;
         $newUser->email = $user->email;
         $newUser->password = bcrypt(Str::random(16)); 
-        // $newUser->save();
+        $newUser->save();
         Auth::login($newUser, true);
         return redirect('/products');
     }

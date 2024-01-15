@@ -35,10 +35,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::all(); // 假設 Product 是您的商品模型
+        $products = Product::all();
 
         return view('home', ['products' => $products]);
-        // return view('home'); 
     }
 
     public function redirectToProvider($provider){
@@ -48,9 +47,6 @@ class HomeController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('google')->stateless()->user();
-        
-        dd($user);
-
         $authUser = User::where('email', $user->email)->first();
         if($authUser) {
             Auth::login($authUser, true);

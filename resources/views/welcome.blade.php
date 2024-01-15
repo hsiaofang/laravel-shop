@@ -3,25 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
-    <!-- 引入字型 -->
+    <title>HOME</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <!-- 引入 Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- 風格設定 -->
     <style>
-        /* 可能的自訂樣式 */
-        body {
-            font-family: 'figtree', sans-serif;
-            /* 添加其他樣式 */
-        }
-        /* ...（其他自訂樣式）... */
+        
     </style>
 </head>
 <body class="antialiased">
     <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center bg-light">
-        <!-- 登入和註冊連結 -->
         @if (Route::has('login'))
             <div class="position-fixed top-0 end-0 p-4 z-index-100">
                 @auth
@@ -37,11 +28,41 @@
         @endif
         <div class="max-w-7xl mx-auto p-4">
             <div class="text-center">
-                <!-- Laravel 圖示 -->
                 <svg viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto bg-gray-100 dark:bg-gray-900">
-                    <!-- ...（SVG路徑）... -->
                 </svg>
             </div>
+
+            <div class="mt-4">
+                @if(session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+                @endif
+                @section('dropdown-item')
+                <a class="dropdown-item" href="{{ route('cart') }}">我的訂單</a>
+                @endsection
+                <div class="row">
+                    @if(isset($products) && count($products) > 0)
+                    @foreach($products as $product)
+                    <div class="col-md-3 mb-4">
+                        <div class="product-card">
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="img-fluid">
+                            <h2 class="product-title">{{ $product->name }}</h2>
+                            <p class="product-price">{{ $product->price }}</p>
+                            <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="add-to-cart-btn">加入購物車</button>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+                    @else
+                    <p>沒有商品</p>
+                    @endif
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

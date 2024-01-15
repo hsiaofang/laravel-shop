@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Models\Product;
 use App\Http\Controllers\Auth\LoginController;
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -23,8 +23,10 @@ use App\Http\Controllers\AdminController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $products = Product::all();
+    return view('welcome', ['products' => $products]);
 });
+
 
 Auth::routes();
 // 命名空間路由

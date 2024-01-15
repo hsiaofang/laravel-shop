@@ -7,83 +7,88 @@ use Illuminate\Support\Facades\Session;
 
 class Cart
 {
-    // items is an associative array
+    // items 是一個關聯陣列
     public $items;
     public $totalQty = 0;
     public $totalPrice = 0;
+
     public function __construct($oldCart)
     {
-        if($oldCart) {
+        if ($oldCart) {
             $this->items      = $oldCart->items;
             $this->totalQty = $oldCart->totalQty;
             $this->totalPrice = $oldCart->totalPrice;
         }
     }
 
-
+    // 將商品加入購物車
     public function add($item, $id)
     {
-        // empty state of storedItem (qty(0), price(item.price), item(object))
-        $storedItem = ['qty'=>0, 'price'=>$item->price, 'item'=>$item];
-        // check if cart has items
-        if($this->items) {
-            // check if cart has existing product
-            // if yes let storedItem = Cart Item
+        // 存儲商品的初始狀態（數量為0，價格為商品價格，商品為物件）
+        $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+
+        // 檢查購物車是否有商品
+        if ($this->items) {
+            // 檢查購物車中是否有現有產品
+            // 如果有，將 storedItem 設置為購物車項目
             if (array_key_exists($id, $this->items)) {
                 $storedItem = $this->items[$id];
             }
         }
-        // storedItem qty increase by one
+
+        // storedItem 的數量增加一
         $storedItem['qty']++;
-        // storedItem price = current book [price] * storedItem qty
+        // storedItem 的價格 = 當前商品的價格 * storedItem 的數量
         $storedItem['price'] = $item->price * $storedItem['qty'];
-        // update current items with storedItem
+        // 使用 storedItem 更新當前商品
         $this->items[$id] = $storedItem;
-        // update total Qty
+        // 更新總數量
         $this->totalQty++;
-        // update total Price
+        // 更新總價格
         $this->totalPrice += $item->price;
     }
 
+    // 增加商品數量一個
     public function increaseByOne($id)
     {
-        // Get item from items based on $id
-        // Increase item qty by one
+        // 從 items 中根據 $id 獲取商品
+        // 商品數量增加一
         $this->items[$id]['qty']++;
-        // Update item price
+        // 更新商品價格
         $this->items[$id]['price'] += $this->items[$id]['item']['price'];
-        // Update totalqty
+        // 更新總數量
         $this->totalQty++;
-        // update total price
+        // 更新總價格
         $this->totalPrice += $this->items[$id]['item']['price'];
     }
 
+    // 減少商品數量一個
     public function decreaseByOne($id)
     {
-        // Get item from items based on $id
-        // Increase item qty by one
+        // 從 items 中根據 $id 獲取商品
+        // 商品數量減少一
         $this->items[$id]['qty']--;
-        // Update item price
+        // 更新商品價格
         $this->items[$id]['price'] -= $this->items[$id]['item']['price'];
-        // Update totalqty
+        // 更新總數量
         $this->totalQty--;
-        // update total price
+        // 更新總價格
         $this->totalPrice -= $this->items[$id]['item']['price'];
-        // unset item if qty < 0
-        if($this->items[$id]['qty'] < 1) {
+        // 如果數量小於1，則刪除商品
+        if ($this->items[$id]['qty'] < 1) {
             unset($this->items[$id]);
         }
     }
 
+    // 移除購物車中的商品
     public function removeItem($id)
     {
-        // Get item from items based on $id
-        // Update totalqty
+        // 從 items 中根據 $id 獲取商品
+        // 更新總數量
         $this->totalQty -= $this->items[$id]['qty'];
-
-        // update total price
-        $this->totalPrice -= $this->items[$id]['qty']*$this->items[$id]['price'];
-        // unset item
+        // 更新總價格
+        $this->totalPrice -= $this->items[$id]['qty'] * $this->items[$id]['price'];
+        // 刪除商品
         unset($this->items[$id]);
     }
 }
