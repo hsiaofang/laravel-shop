@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
+// 擴展原本的登入是否為管理員
+use Illuminate\Http\Request;
+use App\Http\Middleware\CheckIsAdmin;
 
 class LoginController extends Controller
 {
@@ -43,7 +46,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+
+        // 自定義登入時經過判斷是否為管理員
+        // $this->middleware('CheckIsAdmin')->only('login');
+
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.index');
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
 
 
     public function redirectToProvider($provider){

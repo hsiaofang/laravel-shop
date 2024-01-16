@@ -13,6 +13,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>圖片</th> <!-- 新增 -->
                 <th>名稱</th>
                 <th>描述</th>
                 <th>價格</th>
@@ -22,6 +23,7 @@
         <tbody>
             @foreach($products as $product)
                 <tr>
+                    <td><img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="max-width: 100px;"></td> <!-- 新增 -->
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
                     <td>{{ $product->price }}</td>
@@ -105,7 +107,6 @@
             }
         });
     }
-</script>
 </script>
 @endsection
 </body>

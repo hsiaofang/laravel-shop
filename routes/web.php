@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,18 @@ Auth::routes();
 // Route::namespace('Auth')->group(function () {
 //     Auth::routes();
 // });
+Route::group(['middleware' => ['web', 'admin']], function () {
+    // Existing routes within the 'web' middleware group
+
+    // Example route:
+    // Route::get('/admin/index', [AdminController::class, 'index'])->name('admin.index');
+    // Auth::routes();
+
+    // Adjust other admin routes accordingly
+    // ...
+});
+
+
 
 
 // google登入
