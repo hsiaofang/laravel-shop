@@ -5,7 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div style="height: 56px;"></div>
-
+            <div style="height: 56px;"></div>
+            @if(session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+            @endif
+            @section('dropdown-item')
+            <a class="dropdown-item" href="{{ route('cart') }}">購物車</a>
+            <a class="dropdown-item" href="{{ route('order') }}">我的訂單</a>
+            <a class="dropdown-item" href="{{ route('favorite') }}">我的收藏</a>
+            @endsection
             <div class="mt-4">
                 @if(!empty($products) && count($products) > 0)
                 <table class="table">
@@ -26,7 +36,6 @@
                             <td>{{ $product['qty'] }}</td>
                             <td>{{ $product['price'] }}</td>
                             <td>
-                                <!-- Your action links here -->
                             </td>
                         </tr>
                         @endforeach
@@ -43,7 +52,6 @@
                         <button type="submit">前往結帳</button>
                 </div>
 
-                <!-- Other content or actions for the cart -->
                 @else
                 <p style="text-align: center;">購物車為空</p>
                 @endif

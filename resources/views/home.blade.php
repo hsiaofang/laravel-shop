@@ -13,7 +13,9 @@
                 </div>
                 @endif
                 @section('dropdown-item')
-                <a class="dropdown-item" href="{{ route('cart') }}">我的訂單</a>
+                <a class="dropdown-item" href="{{ route('cart') }}">購物車</a>
+                <a class="dropdown-item" href="{{ route('order') }}">我的訂單</a>
+                <a class="dropdown-item" href="{{ route('favorite') }}">我的收藏</a>
                 @endsection
                 <div class="row">
                     @if(isset($products) && count($products) > 0)
@@ -26,7 +28,14 @@
                             <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="add-to-cart-btn" data-product-id="{{ $product->id }}">加入購物車</button>
+                                <button type="submit" class="add-to-cart-btn"
+                                    data-product-id="{{ $product->id }}">加入購物車</button>
+                            </form>
+                            <form action="{{ route('addTofavorite', ['id' => $product->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="add-to-favorites-btn"
+                                    data-product-id="{{ $product->id }}">加入收藏</button>
                             </form>
                         </div>
                     </div>
@@ -43,29 +52,52 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.add-to-cart-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-            var productId = this.getAttribute('data-product-id');
-            var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        // document.querySelectorAll('.add-to-cart-btn').forEach(function (button) {
+        //     button.addEventListener('click', function () {
+        //         var productId = this.getAttribute('data-product-id');
+        //         var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-            fetch('/api/add-to-cart/' + productId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({ quantity: 1 })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
+        //         fetch('/api/add-to-cart/' + productId, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             },
+        //             body: JSON.stringify({ quantity: 1 })
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 console.log(data);
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //             });
+        //     });
+        // });
+
+        // document.querySelectorAll('.add-to-favorites-btn').forEach(function (button) {
+        //     button.addEventListener('click', function () {
+        //         var productId = this.getAttribute('data-product-id');
+        //         var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        //         fetch('/api/add-to-favorites/' + productId, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             },
+        //             body: JSON.stringify({}) // You can pass additional data if needed
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 console.log(data);
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //             });
+        //     });
+        // });
     });
-});
 
 </script>
 @endsection

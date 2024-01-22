@@ -1,5 +1,3 @@
-<!-- resources/views/admin/products/create.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -32,16 +30,4 @@
         <input type="submit" value="新增商品">
     </form>
 </div>
-
-<script>
-    function previewImage(event) {
-        reader = new FileReader();
-            nload = function () {
-                     = document.getElementById('preview-image');
-                       isplay = 'block';
-            pre            r.result;
-        };
-                sDa        target.files[0]);
-    }
-</script>
 @endsection

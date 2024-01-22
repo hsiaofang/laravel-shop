@@ -12,14 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* 調整輪播圖片大小 */
         .carousel-inner img {
             width: 100%;
             height: 400px;
             object-fit: cover;
         }
 
-        /* 移動登入和註冊按鈕 */
         .login-buttons {
             position: absolute;
             top: 10px;
@@ -30,7 +28,6 @@
 
 <body class="antialiased">
     <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center bg-light">
-        <!-- 登入和註冊按鈕 -->
         @if (Route::has('login'))
         <div class="login-buttons">
             @auth
@@ -58,7 +55,7 @@
                                 <img src="{{ asset('images/yours1.png') }}" class="d-block w-100" alt="Slide 2">
                             </div>
                             <div class="carousel-item">
-                                <img src="{{ asset('images/yours2.png') }}" class="d-block w-100" alt="Slide 2">
+                                <img src="{{ asset('images/yours2.jpeg') }}" class="d-block w-100" alt="Slide 2">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"

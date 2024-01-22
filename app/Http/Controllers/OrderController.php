@@ -16,17 +16,9 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-        return view('order', compact('orders'));
+        return view('history', compact('orders'));
     }
-    // public function new()
-    // {
-    //     $oldCart = session()->has('cart') ? session()->get('cart') : null;
-    //     $cart = new Cart($oldCart);
-    //     return view('order',[
-    //         'products'=> $oldCart->items,
-    //         'totalPrice'=> $oldCart->totalPrice,
-    //         'totalQty'=>$oldCart->totalQty]);
-    // }
+
     public function new()
     {
         $oldCart = session()->has('cart') ? session()->get('cart') : null;
@@ -88,11 +80,10 @@ class OrderController extends Controller
             $obj->HashIV = 'v77hoKGq4kWxNNIS';                                           //測試用HashIV，請自行帶入ECPay提供的HashIV
             $obj->MerchantID = '2000132';                                                     //測試用MerchantID，請自行帶入ECPay提供的MerchantID
             $obj->EncryptType = '1';                                                           //CheckMacValue加密類型，請固定填入1，使用SHA256加密
-            //基本參數(請依系統規劃自行調整)
             $MerchantTradeNo = $uuid_temp;
-            $obj->Send['ReturnURL'] = "https://05e0-114-38-9-29.ngrok-free.app/callback"; // 付款完成通知回傳的網址
-            $obj->Send['PeriodReturnURL'] = "https://05e0-114-38-9-29.ngrok-free.app/callback"; // 付款完成通知回傳的網址
-            $obj->Send['ClientBackURL'] = "https://05e0-114-38-9-29.ngrok-free.app/success"; // 付款完成通知回傳的網址            
+            $obj->Send['ReturnURL'] = "https://9780-114-38-32-246.ngrok-free.app/callback"; // 付款完成通知回傳的網址
+            $obj->Send['PeriodReturnURL'] = "https://9780-114-38-32-246.ngrok-free.app/callback"; // 付款完成通知回傳的網址
+            $obj->Send['ClientBackURL'] = "https://9780-114-38-32-246.ngrok-free.app/success"; // 付款完成通知回傳的網址            
             $obj->Send['MerchantTradeNo'] = $MerchantTradeNo;                          //訂單編號
             $obj->Send['MerchantTradeDate'] = date('Y/m/d H:i:s');                       //交易時間
             $obj->Send['TotalAmount'] = $cart->totalPrice;                                      //交易金額
@@ -111,6 +102,7 @@ class OrderController extends Controller
                 )
             );
             session()->forget('cart');
+            // dd($obj);
             $obj->CheckOut();
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -118,16 +110,18 @@ class OrderController extends Controller
     }
 
     public function callback()
-    {
+    {   
+        // dd(request());
         $order = Order::where('uuid', '=', request('MerchantTradeNo'))->firstOrFail();
         $order->paid = !$order->paid;
         $order->save();
+        dd($order);
     }
 
     public function redirectFromECpay()
     {
         session()->flash('success', 'Order success!');
-        return redirect('/products');
+        return redirect('/order');
     }
 }
 

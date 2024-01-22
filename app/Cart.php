@@ -21,7 +21,6 @@ class Cart
         }
     }
 
-    // 將商品加入購物車
     public function add($item, $id)
     {
         // 存儲商品的初始狀態（數量為0，價格為商品價格，商品為物件）
@@ -48,7 +47,6 @@ class Cart
         $this->totalPrice += $item->price;
     }
 
-    // 增加商品數量一個
     public function increaseByOne($id)
     {
         // 從 items 中根據 $id 獲取商品
@@ -62,7 +60,6 @@ class Cart
         $this->totalPrice += $this->items[$id]['item']['price'];
     }
 
-    // 減少商品數量一個
     public function decreaseByOne($id)
     {
         // 從 items 中根據 $id 獲取商品
@@ -80,7 +77,6 @@ class Cart
         }
     }
 
-    // 移除購物車中的商品
     public function removeItem($id)
     {
         // 從 items 中根據 $id 獲取商品

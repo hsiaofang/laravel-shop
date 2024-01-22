@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3VisibilityConverter;
+use Illuminate\Support\Facades\Redis;
+
 
 class AdminController extends Controller
 {
@@ -25,7 +27,9 @@ class AdminController extends Controller
     public function index()
     {
         $totalSales = 50000;
-        $totalVisits = 100000; 
+        // $totalVisits = 100000; 
+        $totalVisits = Redis::get('site_total_visits') ?? 0;
+
         $totalFavorites = 1500; 
         $todayOrders = 20;  
         $monthlyOrders = 500;  
@@ -34,7 +38,7 @@ class AdminController extends Controller
         return view('admin.index', $data);
     }
     
-    public function products()
+    public function product()
     {
         $products = Product::all();
 
@@ -108,6 +112,8 @@ class AdminController extends Controller
         return redirect()->back()->with('success', '商品儲存成功');
     }
     
+
+    
     public function editProduct(Product $product)
     {
         $editedProduct = [
@@ -117,5 +123,18 @@ class AdminController extends Controller
         ];
 
         return response()->json($editedProduct);
+    }
+
+    public function edit($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            // 如果找不到商品，返回一些錯誤數據或者空數據
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        // 返回商品數據
+        return response()->json($product);
     }
 }
