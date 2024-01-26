@@ -8,6 +8,11 @@
         {{ session('success') }}
     </div>
     @endif
+    @section('dropdown-item')
+    <a class="dropdown-item" href="{{ route('admin.product') }}">商品管理</a>
+    <a class="dropdown-item" href="{{ route('admin.order') }}">訂單管理</a>
+    <a class="dropdown-item" href="{{ route('admin.user') }}">用戶管理</a>
+    @endsection
     <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <label for="name">名稱：</label>

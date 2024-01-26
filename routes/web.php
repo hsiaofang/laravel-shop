@@ -7,6 +7,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Back\BackstageController;
+use App\Http\Controllers\Back\BackproductController;
+use App\Http\Controllers\Back\BackorderController;
+use App\Http\Controllers\Back\BackuserController;
 use App\Http\Middleware\SiteVisits;
 
 // 主頁面
@@ -45,16 +49,16 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 
 // 後台管理路由
 Route::prefix('admin')->group(function () {
-    Route::get('/index', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/index', [BackstageController::class, 'index'])->name('admin.index');
     Route::prefix('products')->group(function () {
-        Route::get('/', [AdminController::class, 'product'])->name('admin.product');
-        Route::get('/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
-        Route::post('/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
-        Route::get('products/{id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
-        Route::put('products/{id}/update', [ProductController::class, 'update'])->name('admin.products.update');
-        Route::delete('products/{id}/delete', [ProductController::class, 'delete'])->name('admin.products.delete');
+        Route::get('/', [BackproductController::class, 'index'])->name('admin.product');
+        Route::get('/create', [BackproductController::class, 'createindex'])->name('admin.products.create');
+        Route::post('/store', [BackproductController::class, 'create'])->name('admin.products.store');
+        Route::get('products/{id}/edit', [BackproductController::class, 'edit'])->name('admin.products.edit');
+        Route::put('products/{id}/update', [BackproductController::class, 'update'])->name('admin.products.update');
+        Route::delete('products/{id}/delete', [BackproductController::class, 'delete'])->name('admin.products.delete');
     });
 
-    Route::get('/orders', [AdminController::class, 'orders'])->name('admin.order');
-    Route::get('/users', [AdminController::class, 'users'])->name('admin.user');
+    Route::get('/orders', [BackorderController::class, 'index'])->name('admin.order');
+    Route::get('/users', [BackuserController::class, 'index'])->name('admin.user');
 });

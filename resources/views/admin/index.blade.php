@@ -13,7 +13,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">總銷售額</h5>
-                    <p class="card-text">NTD {{ $totalSales }}</p>
+                    <p class="card-text">NTD {{ $infos['totalSales']['total_sales'] }}</p>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="card bg-success text-white">
                 <div class="card-body">
                     <h5 class="card-title">總訪問量</h5>
-                    <p class="card-text">{{ $totalVisits }} 次</p>
+                    <p class="card-text">{{ $infos['totalVisits']['site_total_visits'] }} 次</p>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
             <div class="card bg-info text-white">
                 <div class="card-body">
                     <h5 class="card-title">總收藏量</h5>
-                    <p class="card-text">{{ $totalFavorites }} 次</p>
+                    <p class="card-text">{{ $infos['totalFavorites']['total_favorites'] }} 次</p>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <div class="card bg-warning text-dark">
                 <div class="card-body">
                     <h5 class="card-title">今日訂單</h5>
-                    <p class="card-text">{{ $todayOrders }} 筆</p>
+                    <p class="card-text">{{ $infos['todayOrders']['today_orders'] }} 筆</p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
             <div class="card bg-danger text-white">
                 <div class="card-body">
                     <h5 class="card-title">本月訂單</h5>
-                    <p class="card-text">{{ $monthlyOrders }} 筆</p>
+                    <p class="card-text">{{ $infos['thisMonthOrders']['this_month_orders'] }} 筆</p>
                 </div>
             </div>
         </div>
