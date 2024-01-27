@@ -5,19 +5,19 @@ namespace App;
 use App\Models\Product;
 use Illuminate\Support\Facades\Session;
 
-class Cart
+class Item
 {
     // items 是一個關聯陣列
     public $items;
     public $totalQty = 0;
     public $totalPrice = 0;
 
-    public function __construct($oldCart)
+    public function __construct($oldItems)
     {
-        if ($oldCart) {
-            $this->items      = $oldCart->items;
-            $this->totalQty = $oldCart->totalQty;
-            $this->totalPrice = $oldCart->totalPrice;
+        if ($oldItems) {
+            $this->items      = $oldItems->items;
+            $this->totalQty = $oldItems->totalQty;
+            $this->totalPrice = $oldItems->totalPrice;
         }
     }
 

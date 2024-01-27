@@ -5,38 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Session;
-use App\Cart;
+use App\Item;
 
 
 
 class ProductController extends Controller
 {
-    // public function index()
-    // {
-    //     // $products = Product::all();
-    //     // dd($products);
-
-    // return view('cart', compact('cart', 'totalPrice', 'totalQty'));
-    // }
 
     public function addToCart(Request $request, $id)
     {
-        // dd($request);
         $product = Product::find($id);
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
-        $cart->add($product, $product->id);
-        Session::put('cart', $cart);
-        return redirect()->back()->with('success', '商品已成功加入購物車！');
 
+        // 使用 Laravel 的服務容器解析 Item 實例
+        $cart = app(Item::class, ['oldItems' => session('cart')]);
+        $cart->add($product, $product->id);
+
+        Session::put('cart', $cart);
+
+        return redirect()->back()->with('success', '商品已成功加入購物車！');
     }
 
     public function addTofavorite(Request $request, $id)
     {
-        // dd($request);
         $product = Product::find($id);
-        $product && !Session::has('favorites.' . $id);
+
+        $favorite = app(Item::class, ['oldItems' => session('favorite')]);
         Session::put('favorites.' . $id, $product);
+
         return redirect()->back()->with('success', '商品已成功加入收藏！');
     }
 
@@ -67,9 +62,9 @@ class ProductController extends Controller
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
 
-        if ($oldCart) {
-            $cart = new Cart($oldCart);
+        $cart = app(Item::class, ['oldItems' => $oldCart]);
 
+        if ($oldCart) {
             return view('cart', [
                 'products' => $oldCart->items,
                 'totalPrice' => $oldCart->totalPrice,
@@ -100,7 +95,7 @@ class ProductController extends Controller
             return redirect()->route('admin.product')->with('error', '找不到該產品');
         }
 
-        return response()->json($product); // 將產品資料以 JSON 格式返回給前端
+        return response()->json($product); 
     }
 
     public function update(Request $request, $id)
@@ -129,16 +124,12 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::find($id);
-
         if (!$product) {
             return response()->json(['success' => false, 'message' => '找不到指定的商品'], 404);
         }
 
         $product->delete();
         return redirect()->back()->with('success', '商品刪除成功！');
-
-
-        // return response()->json(['success' => true, 'message' => '商品已成功刪除']);
     }
 
 
